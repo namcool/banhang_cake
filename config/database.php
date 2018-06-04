@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'default' => env('DB_CONNECTION', 'mysql'),
+    'default' => env('DB_CONNECTION', 'pgsql-banhang'),
 
     /*
     |--------------------------------------------------------------------------
@@ -80,7 +80,7 @@ return [
             'prefix' => '',
         ],
 
-        'pgsql' => [
+        'pgsql-banhang' => [
             'driver' => 'pgsql',
             'host' => $DATABASE_URL["host"],
             'port' => $DATABASE_URL["port"],
