@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Slide;
 use App\Products;
+use App\Type_products;
+use App\Cart;
+use Session;
 
 class PageController extends Controller
 {
@@ -17,14 +20,19 @@ class PageController extends Controller
         return view('page.trangchu',compact('slide','new_product','promotion_product'));
     }
 
-    public function getLoaiSp()
+    public function getLoaiSp($type)
     {
-        return view('page.loai_sanpham');
+        $sp_theoloai = Products::where('id_type',$type)->get();
+        $sp_khac = Products::where('id_type','<>',$type)->paginate(3);
+        $all_loai = Type_products::all();
+        $current_loai = Type_products::where('id',$type)->first();        return view('page.loai_sanpham',compact('sp_theoloai','sp_khac','all_loai','current_loai'));
     }
 
-    public function getChitietSp()
+    public function getChitietSp(Request $req)
     {
-        return view('page.chitiet_sanpham');
+        $sanpham = Products::where('id',$req->id)->first();
+        $sp_tuongtu = Products::where('id_type',$sanpham->id_type)->paginate(3);
+        return view('page.chitiet_sanpham',compact('sanpham','sp_tuongtu'));
     }
 
     public function getLienhe()
@@ -35,5 +43,56 @@ class PageController extends Controller
     public function getThongtin()
     {
         return view('page.thongtin');
+    }
+
+    public function getAddtoCart(Request $req, $id)
+    {
+        $product = Products::find($id);
+        $oldCart = Session('cart')?Session::get('cart'):null;
+        $cart = new Cart($oldCart);
+        $cart->add($product,$id);
+        $req->session()->put('cart',$cart);
+        return redirect()->back();
+    }
+
+    public function getAddtoCartwithQty(Request $req)
+    {
+        return redirect()->back();
+    }
+
+    public function postAddtoCartwithQty(Request $req)
+    {
+        $product = Products::find($req->id);
+        $oldCart = Session('cart')?Session::get('cart'):null;
+        $cart = new Cart($oldCart);
+        $cart->add_qty($product,$req->id,$req->select);
+        $req->session()->put('cart',$cart);
+        return redirect()->back();
+    }
+
+    public function getDelItemCart($id)
+    {
+        $oldCart = Session::has('cart')?Session::get('cart'):null;
+        $cart = new Cart($oldCart);
+        $cart->removeItem($id);
+        if(count($cart->items) > 0)
+        {
+            Session::put('cart',$cart);
+        }
+        else
+        {
+            Session::forget('cart');
+        }
+        return redirect()->back();
+    }
+
+    public function getThanhtoan()
+    {
+        if(Session::has('cart'))
+        {
+            $oldCart = Session::get('cart');
+            $cart = new Cart($oldCart);
+            return view('page.thanhtoan',['cart'=>Session::get('cart'),'product_cart'=>$cart->items,'totalPrice'=>$cart->totalPrice,'totalQty'=>$cart->totalQty]);
+        }
     }
 }

@@ -1,13 +1,15 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.4
+-- version 4.7.9
 -- https://www.phpmyadmin.net/
 --
--- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th5 24, 2018 lúc 11:58 SA
--- Phiên bản máy phục vụ: 5.7.14
--- Phiên bản PHP: 5.6.25
+-- Máy chủ: 127.0.0.1:3306
+-- Thời gian đã tạo: Th12 27, 2018 lúc 05:21 PM
+-- Phiên bản máy phục vụ: 5.7.21
+-- Phiên bản PHP: 5.6.35
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -26,16 +28,19 @@ SET time_zone = "+00:00";
 -- Cấu trúc bảng cho bảng `bills`
 --
 
-CREATE TABLE `bills` (
-  `id` int(10) UNSIGNED NOT NULL,
+DROP TABLE IF EXISTS `bills`;
+CREATE TABLE IF NOT EXISTS `bills` (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `id_customer` int(10) UNSIGNED DEFAULT NULL,
   `date_order` date DEFAULT NULL,
   `total` double DEFAULT NULL COMMENT 'Tổng tiền',
   `payment` varchar(200) DEFAULT NULL COMMENT 'Hình thức thanh toán',
   `note` varchar(500) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `id_customer_fk` (`id_customer`)
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
 
 --
 -- Đang đổ dữ liệu cho bảng `bills`
@@ -54,15 +59,19 @@ INSERT INTO `bills` (`id`, `id_customer`, `date_order`, `total`, `payment`, `not
 -- Cấu trúc bảng cho bảng `bill_detail`
 --
 
-CREATE TABLE `bill_detail` (
-  `id` int(10) UNSIGNED NOT NULL,
+DROP TABLE IF EXISTS `bill_detail`;
+CREATE TABLE IF NOT EXISTS `bill_detail` (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `id_bill` int(10) UNSIGNED NOT NULL,
   `id_product` int(10) UNSIGNED NOT NULL,
   `quantity` int(11) NOT NULL COMMENT 'Số lượng',
   `unit_price` int(11) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id_bill_fk` (`id_bill`),
+  KEY `id_product_fk` (`id_product`)
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
 
 --
 -- Đang đổ dữ liệu cho bảng `bill_detail`
@@ -84,8 +93,9 @@ INSERT INTO `bill_detail` (`id`, `id_bill`, `id_product`, `quantity`, `unit_pric
 -- Cấu trúc bảng cho bảng `customer`
 --
 
-CREATE TABLE `customer` (
-  `id` int(10) UNSIGNED NOT NULL,
+DROP TABLE IF EXISTS `customer`;
+CREATE TABLE IF NOT EXISTS `customer` (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
   `gender` varchar(10) NOT NULL,
   `email` varchar(50) NOT NULL,
@@ -93,8 +103,9 @@ CREATE TABLE `customer` (
   `phone_number` varchar(20) NOT NULL,
   `note` varchar(200) NOT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
 
 --
 -- Đang đổ dữ liệu cho bảng `customer`
@@ -113,21 +124,23 @@ INSERT INTO `customer` (`id`, `name`, `gender`, `email`, `address`, `phone_numbe
 -- Cấu trúc bảng cho bảng `news`
 --
 
-CREATE TABLE `news` (
-  `id` int(10) NOT NULL,
+DROP TABLE IF EXISTS `news`;
+CREATE TABLE IF NOT EXISTS `news` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
   `title` varchar(200) NOT NULL,
   `content` text NOT NULL,
   `image` varchar(100) NOT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 --
 -- Đang đổ dữ liệu cho bảng `news`
 --
 
 INSERT INTO `news` (`id`, `title`, `content`, `image`, `created_at`, `updated_at`) VALUES
-(1, 'Mùa trung thu năm nay, Hỷ Lâm Môn muốn gửi đến quý khách hàng sản phẩm mới xuất hiện lần đầu tiên tại Việt nam "Bánh trung thu Bơ Sữa HongKong".', 'Những ý tưởng dưới đây sẽ giúp bạn sắp xếp tủ quần áo trong phòng ngủ chật hẹp của mình một cách dễ dàng và hiệu quả nhất. ', 'sample1.jpg', '2017-03-10 23:20:23', '2018-04-27 06:31:50'),
+(1, 'Mùa trung thu năm nay, Hỷ Lâm Môn muốn gửi đến quý khách hàng sản phẩm mới xuất hiện lần đầu tiên tại Việt nam \"Bánh trung thu Bơ Sữa HongKong\".', 'Những ý tưởng dưới đây sẽ giúp bạn sắp xếp tủ quần áo trong phòng ngủ chật hẹp của mình một cách dễ dàng và hiệu quả nhất. ', 'sample1.jpg', '2017-03-10 23:20:23', '2018-04-27 06:31:50'),
 (2, 'Tư vấn cải tạo phòng ngủ nhỏ sao cho thoải mái và thoáng mát', 'Chúng tôi sẽ tư vấn cải tạo và bố trí nội thất để giúp phòng ngủ của chàng trai độc thân thật thoải mái, thoáng mát và sáng sủa nhất. ', 'sample2.jpg', '2016-10-19 19:07:14', '2018-04-27 06:31:50'),
 (3, 'Đồ gỗ nội thất và nhu cầu, xu hướng sử dụng của người dùng', 'Đồ gỗ nội thất ngày càng được sử dụng phổ biến nhờ vào hiệu quả mà nó mang lại cho không gian kiến trúc. Xu thế của các gia đình hiện nay là muốn đem thiên nhiên vào nhà ', 'sample3.jpg', '2016-10-19 19:07:14', '2018-04-27 06:31:50'),
 (4, 'Hướng dẫn sử dụng bảo quản đồ gỗ, nội thất.', 'Ngày nay, xu hướng chọn vật dụng làm bằng gỗ để trang trí, sử dụng trong văn phòng, gia đình được nhiều người ưa chuộng và quan tâm. Trên thị trường có nhiều sản phẩm mẫu ', 'sample4.jpg', '2016-10-19 19:07:14', '2018-04-27 06:31:50'),
@@ -139,8 +152,9 @@ INSERT INTO `news` (`id`, `title`, `content`, `image`, `created_at`, `updated_at
 -- Cấu trúc bảng cho bảng `products`
 --
 
-CREATE TABLE `products` (
-  `id` int(10) UNSIGNED NOT NULL,
+DROP TABLE IF EXISTS `products`;
+CREATE TABLE IF NOT EXISTS `products` (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` varchar(100) DEFAULT NULL,
   `id_type` int(10) UNSIGNED NOT NULL,
   `description` text,
@@ -150,8 +164,10 @@ CREATE TABLE `products` (
   `unit` varchar(255) DEFAULT NULL,
   `new` int(10) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id_type_fk` (`id_type`)
+) ENGINE=InnoDB AUTO_INCREMENT=63 DEFAULT CHARSET=utf8;
 
 --
 -- Đang đổ dữ liệu cho bảng `products`
@@ -226,11 +242,13 @@ INSERT INTO `products` (`id`, `name`, `id_type`, `description`, `unit_price`, `p
 -- Cấu trúc bảng cho bảng `slide`
 --
 
-CREATE TABLE `slide` (
-  `id` int(10) NOT NULL,
+DROP TABLE IF EXISTS `slide`;
+CREATE TABLE IF NOT EXISTS `slide` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
   `link` varchar(100) NOT NULL,
-  `image` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `image` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 --
 -- Đang đổ dữ liệu cho bảng `slide`
@@ -248,14 +266,16 @@ INSERT INTO `slide` (`id`, `link`, `image`) VALUES
 -- Cấu trúc bảng cho bảng `type_products`
 --
 
-CREATE TABLE `type_products` (
-  `id` int(10) UNSIGNED NOT NULL,
+DROP TABLE IF EXISTS `type_products`;
+CREATE TABLE IF NOT EXISTS `type_products` (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
   `description` text,
   `image` varchar(255) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
 --
 -- Đang đổ dữ liệu cho bảng `type_products`
@@ -264,7 +284,7 @@ CREATE TABLE `type_products` (
 INSERT INTO `type_products` (`id`, `name`, `description`, `image`, `created_at`, `updated_at`) VALUES
 (1, 'Bánh mặn', 'Nếu từng bị mê hoặc bởi các loại tarlet ngọt thì chắn chắn bạn không thể bỏ qua những loại tarlet mặn. Ngoài hình dáng bắt mắt, lớp vở bánh giòn giòn cùng với nhân mặn như thịt gà, nấm, thị heo ,… của bánh sẽ chinh phục bất cứ ai dùng thử.', 'banh-man-thu-vi-nhat-1.jpg', NULL, NULL),
 (2, 'Bánh ngọt', 'Bánh ngọt là một loại thức ăn thường dưới hình thức món bánh dạng bánh mì từ bột nhào, được nướng lên dùng để tráng miệng. Bánh ngọt có nhiều loại, có thể phân loại dựa theo nguyên liệu và kỹ thuật chế biến như bánh ngọt làm từ lúa mì, bơ, bánh ngọt dạng bọt biển. Bánh ngọt có thể phục vụ những mục đính đặc biệt như bánh cưới, bánh sinh nhật, bánh Giáng sinh, bánh Halloween..', '20131108144733.jpg', '2016-10-11 19:16:15', '2016-10-12 18:38:35'),
-(3, 'Bánh trái cây', 'Bánh trái cây, hay còn gọi là bánh hoa quả, là một món ăn chơi, không riêng gì của Huế nhưng khi "lạc" vào mảnh đất Cố đô, món bánh này dường như cũng mang chút tinh tế, cầu kỳ và đặc biệt. Lấy cảm hứng từ những loại trái cây trong vườn, qua bàn tay khéo léo của người phụ nữ Huế, món bánh trái cây ra đời - ngọt thơm, dịu nhẹ làm đẹp lòng biết bao người thưởng thức.', 'banhtraicay.jpg', '2016-10-17 17:33:33', '2016-10-15 00:25:27'),
+(3, 'Bánh trái cây', 'Bánh trái cây, hay còn gọi là bánh hoa quả, là một món ăn chơi, không riêng gì của Huế nhưng khi \"lạc\" vào mảnh đất Cố đô, món bánh này dường như cũng mang chút tinh tế, cầu kỳ và đặc biệt. Lấy cảm hứng từ những loại trái cây trong vườn, qua bàn tay khéo léo của người phụ nữ Huế, món bánh trái cây ra đời - ngọt thơm, dịu nhẹ làm đẹp lòng biết bao người thưởng thức.', 'banhtraicay.jpg', '2016-10-17 17:33:33', '2016-10-15 00:25:27'),
 (4, 'Bánh kem', 'Với người Việt Nam thì bánh ngọt nói chung đều hay được quy về bánh bông lan – một loại tráng miệng bông xốp, ăn không hoặc được phủ kem lên thành bánh kem. Tuy nhiên, cốt bánh kem thực ra có rất nhiều loại với hương vị, kết cấu và phương thức làm khác nhau chứ không chỉ đơn giản là “bánh bông lan” chung chung đâu nhé!', 'banhkem.jpg', '2016-10-25 20:29:19', '2016-10-25 19:22:22'),
 (5, 'Bánh crepe', 'Crepe là một món bánh nổi tiếng của Pháp, nhưng từ khi du nhập vào Việt Nam món bánh đẹp mắt, ngon miệng này đã làm cho biết bao bạn trẻ phải “xiêu lòng”', 'crepe.jpg', '2016-10-27 21:00:00', '2016-10-26 21:00:23'),
 (6, 'Bánh Pizza', 'Pizza đã không chỉ còn là một món ăn được ưa chuộng khắp thế giới mà còn được những nhà cầm quyền EU chứng nhận là một phần di sản văn hóa ẩm thực châu Âu. Và để được chứng nhận là một nhà sản xuất pizza không hề đơn giản. Người ta phải qua đủ mọi các bước xét duyệt của chính phủ Ý và liên minh châu Âu nữa… tất cả là để đảm bảo danh tiếng cho món ăn này.', 'pizza.jpg', '2016-10-25 10:19:00', NULL),
@@ -276,8 +296,9 @@ INSERT INTO `type_products` (`id`, `name`, `description`, `image`, `created_at`,
 -- Cấu trúc bảng cho bảng `users`
 --
 
-CREATE TABLE `users` (
-  `id` int(10) UNSIGNED NOT NULL,
+DROP TABLE IF EXISTS `users`;
+CREATE TABLE IF NOT EXISTS `users` (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `full_name` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
@@ -285,8 +306,9 @@ CREATE TABLE `users` (
   `address` varchar(100) NOT NULL,
   `remember_token` varchar(100) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 --
 -- Đang đổ dữ liệu cho bảng `users`
@@ -295,106 +317,6 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`id`, `full_name`, `email`, `password`, `phone`, `address`, `remember_token`, `created_at`, `updated_at`) VALUES
 (6, 'Hương Hương', 'huonghuong08.php@gmail.com', '$2y$10$rGY4KT6ZSMmLnxIbmTXrsu2xdgRxm8x0UTwCyYCAzrJ320kYheSRq', '23456789', 'Hoàng Diệu 2', NULL, '2017-03-23 00:17:33', '2017-03-23 00:17:33');
 
---
--- Chỉ mục cho các bảng đã đổ
---
-
---
--- Chỉ mục cho bảng `bills`
---
-ALTER TABLE `bills`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `id_customer_fk` (`id_customer`);
-
---
--- Chỉ mục cho bảng `bill_detail`
---
-ALTER TABLE `bill_detail`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `id_bill_fk` (`id_bill`),
-  ADD KEY `id_product_fk` (`id_product`);
-
---
--- Chỉ mục cho bảng `customer`
---
-ALTER TABLE `customer`
-  ADD PRIMARY KEY (`id`);
-
---
--- Chỉ mục cho bảng `news`
---
-ALTER TABLE `news`
-  ADD PRIMARY KEY (`id`);
-
---
--- Chỉ mục cho bảng `products`
---
-ALTER TABLE `products`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `id_type_fk` (`id_type`);
-
---
--- Chỉ mục cho bảng `slide`
---
-ALTER TABLE `slide`
-  ADD PRIMARY KEY (`id`);
-
---
--- Chỉ mục cho bảng `type_products`
---
-ALTER TABLE `type_products`
-  ADD PRIMARY KEY (`id`);
-
---
--- Chỉ mục cho bảng `users`
---
-ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`);
-
---
--- AUTO_INCREMENT cho các bảng đã đổ
---
-
---
--- AUTO_INCREMENT cho bảng `bills`
---
-ALTER TABLE `bills`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
---
--- AUTO_INCREMENT cho bảng `bill_detail`
---
-ALTER TABLE `bill_detail`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
---
--- AUTO_INCREMENT cho bảng `customer`
---
-ALTER TABLE `customer`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
---
--- AUTO_INCREMENT cho bảng `news`
---
-ALTER TABLE `news`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
---
--- AUTO_INCREMENT cho bảng `products`
---
-ALTER TABLE `products`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
---
--- AUTO_INCREMENT cho bảng `slide`
---
-ALTER TABLE `slide`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
---
--- AUTO_INCREMENT cho bảng `type_products`
---
-ALTER TABLE `type_products`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
---
--- AUTO_INCREMENT cho bảng `users`
---
-ALTER TABLE `users`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- Các ràng buộc cho các bảng đã đổ
 --
@@ -417,6 +339,7 @@ ALTER TABLE `bill_detail`
 --
 ALTER TABLE `products`
   ADD CONSTRAINT `id_type_fk` FOREIGN KEY (`id_type`) REFERENCES `type_products` (`id`);
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
