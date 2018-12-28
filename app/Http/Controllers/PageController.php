@@ -7,6 +7,9 @@ use App\Slide;
 use App\Products;
 use App\Type_products;
 use App\Cart;
+use App\Customer;
+use App\Bills;
+use App\Bill_detail;
 use Session;
 
 class PageController extends Controller
@@ -88,11 +91,37 @@ class PageController extends Controller
 
     public function getThanhtoan()
     {
-        if(Session::has('cart'))
-        {
-            $oldCart = Session::get('cart');
-            $cart = new Cart($oldCart);
-            return view('page.thanhtoan',['cart'=>Session::get('cart'),'product_cart'=>$cart->items,'totalPrice'=>$cart->totalPrice,'totalQty'=>$cart->totalQty]);
+        return view('page.thanhtoan');
+    }
+
+    public function postThanhtoan(Request $req){
+        $cart = Session::get('cart');
+        $customer = new Customer;
+        $customer->name = $req->name;
+        $customer->gender = $req->gender;
+        $customer->email = $req->email;
+        $customer->address = $req->address;
+        $customer->phone_number = $req->phone;
+        $customer->note = $req->note;
+        $customer->save();
+
+        $bill = new Bills();
+        $bill->id_customer = $customer->id;
+        $bill->date_order = date('Y-m-d');
+        $bill->total = $cart->totalPrice;
+        $bill->payment = $req->payment_method;
+        $bill->note = $req->note;
+        $bill->save();
+
+        foreach ($cart->items as $key => $value) {
+        $bill_detail = new Bill_detail;
+        $bill_detail->id_bill = $bill->id;
+        $bill_detail->id_product = $key;
+        $bill_detail->quantity = $value['qty'];
+        $bill_detail->unit_price = ($value['price']/$value['qty']);
+        $bill_detail->save();
         }
+        Session::forget('cart');
+        return redirect()->back()->with('thongbao','Đặt hàng thành công!!!');
     }
 }

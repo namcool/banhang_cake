@@ -15,7 +15,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('index',[
+Route::get('',[
 	'as'=>'trang-chu',
 	'uses'=>'PageController@getIndex'
 ]);
@@ -63,4 +63,9 @@ Route::get('del-cart/{id}',[
 Route::get('thanh-toan',[
 	'as'=>'thanhtoan',
 	'uses'=>'PageController@getThanhtoan'
+]);
+
+Route::post('thanh-toan',[
+	'as'=>'thanhtoan',
+	'uses'=>'PageController@postThanhtoan'
 ]);
