@@ -69,3 +69,33 @@ Route::post('thanh-toan',[
 	'as'=>'thanhtoan',
 	'uses'=>'PageController@postThanhtoan'
 ]);
+
+Route::get('dang-nhap',[
+	'as'=>'login',
+	'uses'=>'PageController@getLogin'
+]);
+
+Route::post('dang-nhap',[
+	'as'=>'login',
+	'uses'=>'PageController@postLogin'
+]);
+
+Route::get('dang-xuat',[
+	'as'=>'logout',
+	'uses'=>'PageController@getLogout'
+]);
+
+Route::get('dang-ky',[
+	'as'=>'signup',
+	'uses'=>'PageController@getSignUp'
+]);
+
+Route::post('dang-ky',[
+	'as'=>'signup',
+	'uses'=>'PageController@postSignUp'
+]);
+
+Route::get('search',[
+	'as'=>'search',
+	'uses'=>'PageController@getSearch'
+]);

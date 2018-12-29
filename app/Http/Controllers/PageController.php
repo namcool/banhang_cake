@@ -10,7 +10,10 @@ use App\Cart;
 use App\Customer;
 use App\Bills;
 use App\Bill_detail;
+use App\User;
+use Auth;
 use Session;
+use Hash;
 
 class PageController extends Controller
 {
@@ -124,4 +127,86 @@ class PageController extends Controller
         Session::forget('cart');
         return redirect()->back()->with('thongbao','Đặt hàng thành công!!!');
     }
+
+    public function getLogin()
+    {
+        return view('page.login');
+    }
+
+    public function postLogin(Request $req)
+    {
+        $this->validate($req,
+            [
+                'email'=>'required|email',
+                'password'=>'required|min:6'
+            ],
+            [
+                'email.required'=>'Vui lòng nhập email',
+                'email.email'=>'Không đúng định dạng email.',
+                'password.required'=>'Nhập password',
+                'password.min'=>'Mật khẩu quá ngắn! (6 ký tự)'
+            ]
+        );
+        $credentials = array('email'=>$req->email,'password'=>$req->password);
+        if(Auth::attempt($credentials))
+        {
+            return redirect()->back()->with(['flag'=>'success','message'=>'Đăng nhập thành công']);
+        }
+        else
+        {
+            return redirect()->back()->with(['flag'=>'danger','message'=>'Đăng nhập không thành công']);
+
+        }
+    }
+
+    public function getLogout()
+    {
+        Auth::logout();
+        return redirect()->route('trang-chu');
+    }
+
+    public function getSignUp()
+    {
+        return view('page.sign_up');
+    }
+
+    public function postSignUp(Request $req)
+    {
+        $this->validate($req,
+            [
+                'email'=>'required|email|unique:users,email',
+                'password'=>'required|min:6',
+                'full_name'=>'required',
+                'phone'=>'required|max:11',
+                're_password'=>'required|same:password'
+            ],
+            [
+                'email.required'=>'Vui lòng nhập email',
+                'email.email'=>'Không đúng định dạng email.',
+                'email.unique'=>'Email này đã được đăng ký.',
+                'full_name'=>'Chưa nhập tên',
+                'password.required'=>'Nhập password',
+                'password.min'=>'Mật khẩu quá ngắn! (6 ký tự)',
+                'phone.required'=>'Vui lòng nhập số điện thoại.',
+                'phone.max'=>'Nhập sdt quá 11 số!!',
+                're_password.required'=>'Vui lòng nhập lại mật khẩu',
+                're_password.same'=>'Password không trùng khớp.'
+            ]
+        );
+        $user = new User();
+        $user->full_name = $req->full_name;
+        $user->email = $req->email;
+        $user->password = Hash::make($req->password);
+        $user->phone = $req->phone;
+        $user->address = $req->address;
+        $user->save();
+        return redirect()->back()->with('thanhcong','Tạo tài khoản thành công!');
+    }
+
+    public function getSearch(Request $req)
+    {
+        $product = Products::where('name','like','%'.$req->key.'%')->orWhere('unit_price',$req->key)->get();
+        return view('page.search',compact('product'));
+    }
 }
+
