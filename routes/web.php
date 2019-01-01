@@ -120,3 +120,79 @@ Route::post('doi-mat-khau',[
 	'as'=>'changepass',
 	'uses'=>'PageController@postChangePass'
 ]);
+
+Route::get('admin/dangnhap','AdminController@getdangnhapAdmin');
+Route::post('admin/dangnhap','AdminController@postdangnhapAdmin');
+
+Route::get('admin/logout','AdminController@getDangxuatAdmin');
+
+Route::group(['prefix'=>'admin','middleware'=>'adminLogin'],function(){
+	Route::group(['prefix'=>'loaisanpham'],function(){
+		//admin/theloai/them
+		Route::get('danhsach','AdminController@getDanhSachLoaiSp');
+
+		Route::get('sua/{id}','AdminController@getSuaLoaiSp');
+		Route::post('sua/{id}','AdminController@postSuaLoaiSp');
+
+		Route::get('them','AdminController@getThemLoaiSp');
+		Route::post('them','AdminController@postThemLoaiSp');
+
+		Route::get('xoa/{id}','AdminController@getXoaLoaiSp');
+	});
+	// Route::group(['prefix'=>'loaitin'],function(){
+	// 	//admin/theloai/them
+	// 	Route::get('danhsach','LoaiTinController@getDanhSach');
+
+	// 	Route::get('sua/{id}','LoaiTinController@getSua');
+	// 	Route::post('sua/{id}','LoaiTinController@postSua');
+
+	// 	Route::get('them','LoaiTinController@getThem');
+	// 	Route::post('them','LoaiTinController@postThem');
+
+	// 	Route::get('xoa/{id}','LoaiTinController@getXoa');
+	// });
+	// Route::group(['prefix'=>'tintuc'],function(){
+	// 	//admin/theloai/them
+	// 	Route::get('danhsach','TinTucController@getDanhSach');
+
+	// 	Route::get('sua/{id}','TinTucController@getSua');
+	// 	Route::post('sua/{id}','TinTucController@postSua');
+
+	// 	Route::get('them','TinTucController@getThem');
+	// 	Route::post('them','TinTucController@postThem');
+
+	// 	Route::get('xoa/{id}','TinTucController@getXoa');
+
+
+	// });
+	// Route::group(['prefix'=>'comment'],function(){
+	// 	Route::get('xoa/{id}/{idTinTuc}','CommentController@getXoa');	
+	// });
+	// Route::group(['prefix'=>'ajax'],function(){
+	// 	Route::get('loaitin/{idTheLoai}','AjaxController@getLoaiTin');
+	// });
+	// Route::group(['prefix'=>'user'],function(){
+	// 	//admin/theloai/them
+	// 	Route::get('danhsach','UserController@getDanhSach');
+
+	// 	Route::get('sua/{id}','UserController@getSua');
+	// 	Route::post('sua/{id}','UserController@postSua');
+
+	// 	Route::get('xoa/{id}','UserController@getXoa');
+	// 	Route::post('xoa/{id}','UserController@postXoa');
+
+	// 	Route::get('them','UserController@getThem');
+	// 	Route::post('them','UserController@postThem');
+	// });
+	// Route::group(['prefix'=>'slide'],function(){
+	// 	//admin/theloai/them
+	// 	Route::get('danhsach','SlideController@getDanhSach');
+
+	// 	Route::get('sua/{id}','SlideController@getSua');
+	// 	Route::post('sua/{id}','SlideController@postSua');
+
+	// 	Route::get('them','SlideController@getThem');
+	// 	Route::post('them','SlideController@postThem');
+
+	// 	Route::get('xoa/{id}','SlideController@getXoa');
+	});

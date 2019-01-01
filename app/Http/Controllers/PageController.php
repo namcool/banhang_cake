@@ -201,6 +201,7 @@ class PageController extends Controller
         $user->email = $req->email;
         $user->password = Hash::make($req->password);
         $user->phone = $req->phone;
+        $user->isAdmin = 0;
         $user->address = $req->address;
         $user->save();
         return redirect()->back()->with('thanhcong','Tạo tài khoản thành công!');
