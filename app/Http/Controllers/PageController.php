@@ -98,6 +98,9 @@ class PageController extends Controller
     }
 
     public function postThanhtoan(Request $req){
+        
+        if($req->note == "")
+            $req->note = "Không có ghi chú!!";
         $cart = Session::get('cart');
         $customer = new Customer;
         $customer->name = $req->name;
@@ -207,6 +210,98 @@ class PageController extends Controller
     {
         $product = Products::where('name','like','%'.$req->key.'%')->orWhere('unit_price',$req->key)->get();
         return view('page.search',compact('product'));
+    }
+
+    public function getUpdateInfo()
+    {
+        return view('page.update_thongtin');
+    }
+
+    public function postUpdateInfo(Request $req)
+    {
+        // $last_password = Auth::user()->password();
+        $this->validate($req,
+            [
+                'email'=>'required|email',
+                // 'password'=>'required|min:6',
+                'address'=>'required',
+                'full_name'=>'required',
+                'phone'=>'required|max:11'
+                // 'old_password'=>'required|min:6|same:last_password',
+                // 're_password'=>'required|same:password'
+            ],
+            [
+                'email.required'=>'Vui lòng nhập email',
+                'email.email'=>'Không đúng định dạng email.',
+                // 'email.unique'=>'Email này đã được đăng ký.',
+                'full_name.required'=>'Chưa nhập tên!!',
+                'address.required'=>'Chưa nhập địa chỉ!!',
+                // 'password.required'=>'Nhập password',
+                // 'password.min'=>'Mật khẩu quá ngắn! (6 ký tự)',
+                'phone.required'=>'Vui lòng nhập số điện thoại.',
+                'phone.max'=>'Nhập sdt quá 11 số!!'
+                // 'old_password.required'=>'Cần nhập mật khẩu cũ',
+                // 'old_password.min'=>'Mật khẩu quá ngắn! (6 ký tự)',
+                // 'old_password.same'=>'Mật khẩu cũ không trùng khớp',
+                // 're_password.required'=>'Vui lòng nhập lại mật khẩu',
+                // 're_password.same'=>'Password không trùng khớp.'
+            ]
+        );
+        // $user_email = Auth::user()->email;
+        $user = Auth::user();
+        $user->full_name = $req->full_name;
+        $user->email = $req->email;
+        // $user->password = Hash::make($req->password);
+        $user->phone = $req->phone;
+        $user->address = $req->address;
+        $user->save();
+        return redirect()->back()->with('thanhcong','Sửa tài khoản thành công!');
+
+    }
+
+    public function getChangePass()
+    {
+        return view('page.changepass');
+    }
+
+    public function postChangePass(Request $req)
+    {
+        $last_password = Auth::user()->password;
+        $hash_req_pass = Hash::make($req->last_password);
+        if ($hash_req_pass == $last_password) {
+        $this->validate($req,
+            [
+                // 'email'=>'required|email',
+                'password'=>'required|min:6',
+                // 'address'=>'required',
+                // 'full_name'=>'required',
+                // 'phone'=>'required|max:11'
+                // 'old_password'=>'required|min:6|same:last_password',
+                're_password'=>'required|same:password'
+            ],
+            [
+                // 'email.required'=>'Vui lòng nhập email',
+                // 'email.email'=>'Không đúng định dạng email.',
+                // 'email.unique'=>'Email này đã được đăng ký.',
+                // 'full_name.required'=>'Chưa nhập tên!!',
+                // 'address.required'=>'Chưa nhập địa chỉ!!',
+                'password.required'=>'Nhập password',
+                'password.min'=>'Mật khẩu quá ngắn! (6 ký tự)',
+                // 'phone.required'=>'Vui lòng nhập số điện thoại.',
+                // 'phone.max'=>'Nhập sdt quá 11 số!!'
+                // 'old_password.required'=>'Cần nhập mật khẩu cũ',
+                // 'old_password.min'=>'Mật khẩu quá ngắn! (6 ký tự)',
+                // 'old_password.same'=>'Mật khẩu cũ không trùng khớp',
+                're_password.required'=>'Vui lòng nhập lại mật khẩu',
+                're_password.same'=>'Password không trùng khớp.'
+            ]
+        );
+        $user = Auth::user();
+        $user->password = Hash::make($req->password);
+        $user->save();
+        return redirect()->back()->with('thanhcong','Sửa mật khẩu thành công!');
+        }
+        return redirect()->back()->with('baoloi','Mật khẩu cũ không trùng khớp!');
     }
 }
 

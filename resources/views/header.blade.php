@@ -15,7 +15,7 @@
 						<li><a href="{{route('signup')}}">Đăng kí</a></li>
 						<li><a href="{{route('login')}}">Đăng nhập</a></li>
 						@else
-						<li><a href="#"><i class="fa fa-user"></i>Chào bạn {{Auth::user()->full_name}}</a></li>
+						<li><a href="{{route('update_info')}}"><i class="fa fa-user"></i>Chào bạn {{Auth::user()->full_name}}</a></li>
 						<li><a href="{{route('logout')}}">Đăng xuất</a></li>
 						@endif
 

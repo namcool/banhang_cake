@@ -26,7 +26,7 @@
 
 						<div class="form-block">
 							<label for="name">Họ tên*</label>
-							<input type="text" id="name" placeholder="Họ tên" required name="name">
+							<input type="text" id="name" placeholder="Họ tên" value="{{Auth::check()?Auth::user()->full_name:''}}" required name="name">
 						</div>
 						<div class="form-block">
 							<label>Giới tính </label>
@@ -37,18 +37,18 @@
 
 						<div class="form-block">
 							<label for="email">Email*</label>
-							<input type="email" id="email" name="email" required placeholder="expample@gmail.com">
+							<input type="email" id="email" name="email" value="{{Auth::check()?Auth::user()->email:''}}" required placeholder="expample@gmail.com">
 						</div>
 
 						<div class="form-block">
 							<label for="adress">Địa chỉ*</label>
-							<input type="text" id="adress" name="address" placeholder="Street Address" required>
+							<input type="text" id="adress" name="address" value="{{Auth::check()?Auth::user()->address:''}}" placeholder="Street Address" required>
 						</div>
 						
 
 						<div class="form-block">
 							<label for="phone">Điện thoại*</label>
-							<input type="text" id="phone" name="phone" required>
+							<input type="text" id="phone" name="phone" value="{{Auth::check()?Auth::user()->phone:''}}" required>
 						</div>
 						
 						<div class="form-block">
@@ -84,6 +84,9 @@
 								</div>
 								@endforeach
 								<div class="cart-total text-right" style="font-weight: bold">Tổng tiền: <span class="cart-total-value">{{Session('cart')->totalPrice}}</span></div>
+							@else
+
+							<div class="your-order-body" style="padding: 0px 10px;font-size: 15px; text-align: center; font-weight: bold;">(Rỗng)</div>
 							@endif
 							</div>
 							<div class="your-order-head"><h5>Hình thức thanh toán</h5></div>
@@ -112,7 +115,7 @@
 								</ul>
 							</div>
 
-							<div class="text-center"><button type="submit" class="beta-btn primary" {{-- href="#" --}}>Đặt hàng <i class="fa fa-chevron-right"></i></button></div>
+							<div class="text-center"><button type="submit" {{Session::has('cart')?'':'disabled'}} class="beta-btn primary">Đặt hàng <i class="fa fa-chevron-right"></i></button></div>
 						</div> <!-- .your-order -->
 					</div>
 				</div>

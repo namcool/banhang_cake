@@ -95,7 +95,28 @@ Route::post('dang-ky',[
 	'uses'=>'PageController@postSignUp'
 ]);
 
+Route::get('sua-thong-tin',[
+	'as'=>'update_info',
+	'uses'=>'PageController@getUpdateInfo'
+]);
+
+Route::post('sua-thong-tin',[
+	'as'=>'update_info',
+	'uses'=>'PageController@postUpdateInfo'
+]);
+
+
 Route::get('search',[
 	'as'=>'search',
 	'uses'=>'PageController@getSearch'
+]);
+
+Route::get('doi-mat-khau',[
+	'as'=>'changepass',
+	'uses'=>'PageController@getChangePass'
+]);
+
+Route::post('doi-mat-khau',[
+	'as'=>'changepass',
+	'uses'=>'PageController@postChangePass'
 ]);
