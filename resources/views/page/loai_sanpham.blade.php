@@ -38,7 +38,7 @@
 								<div class="col-sm-4">
 									<div class="single-item">
 										<div class="single-item-header">
-											<a href="product.html"><img src="source/image/product/{{$sp->image}}" alt="" height="250px"></a>
+											<a href="{{route('chitietsanpham',$sp->id)}}"><img src="source/image/product/{{$sp->image}}" alt="" height="250px"></a>
 										</div>
 										<div class="single-item-body">
 											@if($sp->promotion_price != 0)
@@ -80,7 +80,7 @@
 								<div class="col-sm-4">
 									<div class="single-item">
 										<div class="single-item-header">
-											<a href="product.html"><img src="source/image/product/{{$sp_k->image}}" alt="" height="250px"></a>
+											<a href="{{route('chitietsanpham',$sp_k->id)}}"><img src="source/image/product/{{$sp_k->image}}" alt="" height="250px"></a>
 										</div>
 										<div class="single-item-body">
 											@if($sp_k->promotion_price != 0)

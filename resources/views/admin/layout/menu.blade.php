@@ -16,7 +16,7 @@
                             <a href="#"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                         </li>
                         <li>
-                            <a href="admin/loaisanpham/danhsach"><i class="fa fa-bar-chart-o fa-fw"></i> Loại sản phẩm<span class="fa arrow"></span></a>
+                            <a href="admin/loaisanpham/danhsach"><i class="fa fa-list-alt fa-fw"></i> Loại sản phẩm<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
                                     <a href="admin/loaisanpham/danhsach">Danh sách</a>
@@ -28,31 +28,31 @@
                             <!-- /.nav-second-level -->
                         </li>
                         <li>
-                            <a href="admin/loaitin/danhsach"><i class="fa fa-diamond fa-fw"></i> Loại tin<span class="fa arrow"></span></a>
+                            <a href="admin/sanpham/danhsach"><i class="fa fa-birthday-cake fa-fw"></i> Sản phẩm<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
-                                    <a href="admin/loaitin/danhsach">Danh sách</a>
+                                    <a href="admin/sanpham/danhsach">Danh sách</a>
                                 </li>
                                 <li>
-                                    <a href="admin/loaitin/them">Thêm</a>
+                                    <a href="admin/sanpham/them">Thêm</a>
                                 </li>
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>                        
                         <li>
-                            <a href="admin/tintuc/danhsach"><i class="fa fa-bar-chart-o fa-fw"></i> Tin tức<span class="fa arrow"></span></a>
+                            <a href="admin/donhang/danhsach"><i class="fa fa-shopping-cart fa-fw"></i> Đơn hàng<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
-                                    <a href="admin/tintuc/danhsach">Danh sách</a>
+                                    <a href="admin/donhang/danhsach">Danh sách</a>
                                 </li>
                                 <li>
-                                    <a href="admin/tintuc/them">Thêm</a>
+                                    <a href="admin/donhang/them">Thêm</a>
                                 </li>
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>
                         <li>
-                            <a href="admin/slide/danhsach"><i class="fa fa-bar-chart-o fa-fw"></i> Slide<span class="fa arrow"></span></a>
+                            <a href="admin/slide/danhsach"><i class="fa fa-picture-o fa-fw"></i> Slide<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
                                     <a href="admin/slide/danhsach">Danh sách</a>

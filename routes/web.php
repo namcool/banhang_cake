@@ -80,10 +80,13 @@ Route::post('dang-nhap',[
 	'uses'=>'PageController@postLogin'
 ]);
 
+
 Route::get('dang-xuat',[
 	'as'=>'logout',
 	'uses'=>'PageController@getLogout'
 ]);
+Route::get('login/facebook', 'Auth\LoginController@redirectToProvider');
+Route::get('login/facebook/callback', 'Auth\LoginController@handleProviderCallback');
 
 Route::get('dang-ky',[
 	'as'=>'signup',
@@ -138,6 +141,18 @@ Route::group(['prefix'=>'admin','middleware'=>'adminLogin'],function(){
 		Route::post('them','AdminController@postThemLoaiSp');
 
 		Route::get('xoa/{id}','AdminController@getXoaLoaiSp');
+	});
+	Route::group(['prefix'=>'sanpham'],function(){
+		//admin/theloai/them
+		Route::get('danhsach','AdminController@getDanhSachSp');
+
+		Route::get('sua/{id}','AdminController@getSuaSp');
+		Route::post('sua/{id}','AdminController@postSuaSp');
+
+		Route::get('them','AdminController@getThemSp');
+		Route::post('them','AdminController@postThemSp');
+
+		Route::get('xoa/{id}','AdminController@getXoaSp');
 	});
 	// Route::group(['prefix'=>'loaitin'],function(){
 	// 	//admin/theloai/them

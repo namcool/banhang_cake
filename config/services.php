@@ -34,5 +34,9 @@ return [
         'key' => env('STRIPE_KEY'),
         'secret' => env('STRIPE_SECRET'),
     ],
-
+    'facebook' => [
+        'client_id' => '3126854510674355',
+        'client_secret' => '8c014b9d89c7259537e90a3d872e43a5',
+        'redirect' => 'http://localhost/banhang_cake/public/login/facebook/callback',
+    ],
 ];

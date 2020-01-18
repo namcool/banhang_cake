@@ -124,4 +124,99 @@ class AdminController extends Controller
 
     	return redirect('admin/loaisanpham/danhsach')->with('thongbao','Bạn đã xóa thành công!');
     }
+
+    //San pham
+    public function getDanhSachSp()
+    {
+        $products = Products::all();
+        $types = Type_Products::all();
+    	return view('admin.sanpham.danhsach',['products'=>$products,'types'=>$types]);
+    }
+
+    public function getThemSp()
+    {
+        $types = Type_Products::all();
+    	return view('admin.sanpham.them',['types'=>$types]);
+    }
+
+    public function postThemSp(Request $req)
+    {
+    	$this->validate($req,
+    		[
+    			'name'=>'required|unique:type_products,name',
+    		],
+    		[
+    			'name.required'=>'Chưa nhập tên sản phẩm!',
+    			'name.unique'=>'Tên sản phẩm đã tồn tại.'
+    		]
+        );
+    	$sp = new Products();
+    	$sp->name = $req->name;
+        $sp->description = $req->description;
+        $sp->id_type = $req->type;
+        $sp->unit_price = $req->unit_price;
+        $sp->promotion_price = $req->promotion_price;
+        $sp->unit = $req->unit;
+        $sp->new = $req->new;
+    	$sp->image = isset($_FILES['image'])?$_FILES['image']['name']:'';
+        $sp->save();
+        $filepath = public_path('source/image/product/');
+
+        move_uploaded_file($_FILES['image']['tmp_name'], $filepath.$_FILES['image']['name']);
+
+
+    	return redirect('admin/sanpham/danhsach')->with('thongbao','Thêm thành công!');
+
+    }
+    public function getSuaSp($id)
+    {
+        $types = Type_Products::all();
+        $sanpham = Products::find($id);
+
+    	return view('admin.sanpham.sua',['sanpham'=>$sanpham,'types'=>$types]);
+    }
+
+    public function postSuaSp(Request $req, $id)
+    {
+    	$this->validate($req,
+    		[
+    			'name'=>'required'
+    		],
+    		[
+    			'name.required'=>'Chưa nhập tên loại sản phẩm!'
+    		]
+    	);
+    	
+    	$sp = Products::find($id);
+    	$sp->name = $req->name;
+    	$sp->description = $req->description;
+        $sp->id_type = $req->type;
+        $sp->unit_price = $req->unit_price;
+        $sp->promotion_price = $req->promotion_price;
+        $sp->unit = $req->unit;
+        $sp->new = $req->new;
+        $oldfile = $req->old;
+        if($_FILES['image']['name'] != '')
+        {
+            $sp->image = $_FILES['image']['name'];
+            $filepath = public_path('source/image/product/');
+            move_uploaded_file($_FILES['image']['tmp_name'], $filepath.$_FILES['image']['name']);
+        }
+        else
+        {
+            $sp->image = $oldfile;
+        }
+        $sp->save();
+
+
+    	return redirect('admin/sanpham/danhsach')->with('thongbao','Sửa thành công!');
+    }
+    public function getXoaSp($id)
+    {
+    	$sp = Products::find($id);
+    	$sp->delete();
+
+    	return redirect('admin/sanpham/danhsach')->with('thongbao','Bạn đã xóa thành công!');
+    }
+
 }

@@ -73,7 +73,7 @@
 						</ul>
 
 						<div class="panel" id="tab-description">
-							<p>{{$sanpham->description}}</p>
+							<p>{{$sanpham->description?$sanpham->description:"Không có mô tả."}}</p>
 						</div>
 					</div>
 					<div class="space50">&nbsp;</div>
