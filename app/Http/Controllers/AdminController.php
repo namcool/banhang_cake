@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use DB;
 use App\Slide;
 use App\Products;
 use App\Type_products;
@@ -218,5 +219,33 @@ class AdminController extends Controller
 
     	return redirect('admin/sanpham/danhsach')->with('thongbao','Bạn đã xóa thành công!');
     }
+    //San pham
+    public function getDanhSachDonhang()
+    {
+        //$bills = Bills::all();
+        //$customers = Customer::all();
+        $bills = DB::table('bills')
+            ->join('customer', 'bills.id_customer', '=', 'customer.id')
+            ->select('bills.id', 'bills.created_at', 'bills.updated_at', 'bills.total', 'bills.payment', 'bills.note', 'bills.status', 'customer.name', 'customer.gender', 'customer.address', 'customer.phone_number')
+            ->get();
+    	return view('admin.donhang.danhsach',['bills'=>$bills]);
+    }
+    
+    public function ajaxRequestStatus(Request $request)
+
+    {
+        
+        $id = $request->id;
+        
+        $status = $request->input('status');
+        
+        $bills = Bills::find($id);
+        $bills->status = $status;
+        $bills->save();
+
+        return response()->json(['success'=>'Cập nhật thành công.']);
+
+    }
+
 
 }

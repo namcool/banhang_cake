@@ -131,7 +131,7 @@ Route::get('admin/logout','AdminController@getDangxuatAdmin');
 
 Route::group(['prefix'=>'admin','middleware'=>'adminLogin'],function(){
 	Route::group(['prefix'=>'loaisanpham'],function(){
-		//admin/theloai/them
+		//admin/loaisanpham/them
 		Route::get('danhsach','AdminController@getDanhSachLoaiSp');
 
 		Route::get('sua/{id}','AdminController@getSuaLoaiSp');
@@ -143,7 +143,7 @@ Route::group(['prefix'=>'admin','middleware'=>'adminLogin'],function(){
 		Route::get('xoa/{id}','AdminController@getXoaLoaiSp');
 	});
 	Route::group(['prefix'=>'sanpham'],function(){
-		//admin/theloai/them
+		//admin/sanpham/them
 		Route::get('danhsach','AdminController@getDanhSachSp');
 
 		Route::get('sua/{id}','AdminController@getSuaSp');
@@ -154,6 +154,21 @@ Route::group(['prefix'=>'admin','middleware'=>'adminLogin'],function(){
 
 		Route::get('xoa/{id}','AdminController@getXoaSp');
 	});
+	Route::group(['prefix'=>'donhang'],function(){
+		//admin/donhang/them
+		Route::get('danhsach','AdminController@getDanhSachDonhang');
+
+		Route::get('sua/{id}','AdminController@getSuaDonhang');
+		Route::post('sua/{id}','AdminController@postSuaDonhang');
+
+		Route::get('them','AdminController@getThemDonhang');
+		Route::post('them','AdminController@postThemDonhang');
+
+		Route::get('xoa/{id}','AdminController@getXoaDonhang');
+
+		Route::post('ajaxRequest', 'AdminController@ajaxRequestStatus');
+	});
+
 	// Route::group(['prefix'=>'loaitin'],function(){
 	// 	//admin/theloai/them
 	// 	Route::get('danhsach','LoaiTinController@getDanhSach');
