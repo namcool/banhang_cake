@@ -33,7 +33,17 @@
                                 <td>{{$tp->name}}</td>
                                 <td>{{$tp->description}}</td>
                                 <td>{{$tp->image}}</td>
-                                <td class="center"><i class="fa fa-trash-o  fa-fw"></i><a href="admin/loaisanpham/xoa/{{$tp->id}}">Delete</a></td>
+                                {{-- <td class="center"><i class="fa fa-trash-o  fa-fw"></i><a href="admin/loaisanpham/xoa/{{$tp->id}}">Delete</a></td> --}}
+                                <td><select class="form-control" id="status_{{$tp->id}}" name="new" onChange="change({{$tp->id}})">
+                                    <option value="1" 
+                                    @if (1 == $tp->status)
+                                        selected="selected"
+                                    @endif>Enabled</option>
+                                    <option value="0" 
+                                    @if (0 == $tp->status)
+                                        selected="selected"
+                                    @endif>Disabled</option>
+                                  </select></td>
                                 <td class="center"><i class="fa fa-pencil fa-fw"></i> <a href="admin/loaisanpham/sua/{{$tp->id}}">Edit</a></td>
                             </tr>
                             @endforeach
@@ -44,5 +54,28 @@
             </div>
             <!-- /.container-fluid -->
         </div>
+        <script type="text/javascript">
+            function change(id)
+            {
+                var status = $('#status_'+id).val();
+                // $.ajaxSetup({
+                //       headers: {
+                //           'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                //       }
+                //   });
+                jQuery.ajax({
+                    url: 'admin/loaisanpham/ajaxLoaisanpham',
+                    type: 'post',
+                    data: {
+                        _token: '{{csrf_token()}}',
+                        status: status,
+                        id: id
+                    },
+                    success: function(result){
+                        alert(result.success);
+                        location.reload(true); 
+                    }});
+            }
+            </script>
         <!-- /#page-wrapper -->
 @endsection

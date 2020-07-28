@@ -28,8 +28,7 @@
                                 <th>Ghi chú</th>
                                 <th>Tổng tiền</th>
                                 <th>Trạng thái</th>
-                                <th>Delete</th>
-                                <th>Edit</th>
+                                <th>View</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -58,8 +57,7 @@
                                         selected="selected"
                                     @endif>Đã hủy</option>
                                   </select></td>
-                                <td class="center"><i class="fa fa-trash-o  fa-fw"></i><a href="admin/loaisanpham/xoa/">Delete</a></td>
-                                <td class="center"><i class="fa fa-pencil fa-fw"></i> <a href="admin/loaisanpham/sua/">Edit</a></td>
+                                <td class="center"><i class="fa fa-pencil fa-fw"></i> <a href="admin/loaisanpham/view/">View</a></td>
                             </tr>
                             @endforeach
                         </tbody>

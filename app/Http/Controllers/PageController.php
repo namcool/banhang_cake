@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use DB;
 use App\Slide;
 use App\Products;
 use App\Type_products;
@@ -21,7 +22,13 @@ class PageController extends Controller
     {
         $slide = Slide::all();
         //return view('page.trangchu',['slide'=>slide]);
-        $new_product = Products::where('new',1)->paginate(4,['*'], 'pag');
+        //$new_product = Products::where('new',1)->paginate(4,['*'], 'pag');
+        $new_product = DB::table('products')
+            ->distinct()
+            ->join('type_products', 'products.id_type', '=', 'type_products.id')
+            ->select('products.*')
+            ->where([['type_products.status','=',1],['products.new','=',1]])
+            ->paginate(4,['*'], 'pag');
         $promotion_product = Products::where('promotion_price','<>',0)->paginate(8);
         return view('page.trangchu',compact('slide','new_product','promotion_product'));
     }

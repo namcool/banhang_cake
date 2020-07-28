@@ -92,7 +92,9 @@
 						<li><a href="#">Loại sản phẩm</a>
 							<ul class="sub-menu">
 								@foreach($loai_sp as $loai)
-								<li><a href="{{route('loaisanpham',$loai->id)}}">{{$loai->name}}</a></li>
+									@if($loai->status == 1)
+										<li><a href="{{route('loaisanpham',$loai->id)}}">{{$loai->name}}</a></li>
+									@endif
 								@endforeach
 							</ul>
 						</li>

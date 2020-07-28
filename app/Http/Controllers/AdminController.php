@@ -86,7 +86,8 @@ class AdminController extends Controller
     	$loaisp = new Type_Products();
     	$loaisp->name = $req->name;
     	$loaisp->description = $req->description;
-    	$loaisp->image = '';
+        $loaisp->image = '';
+        $loaisp->status = 0;
     	$loaisp->save();
 
     	return redirect()->back()->with('thongbao','Thêm thành công!');
@@ -219,7 +220,7 @@ class AdminController extends Controller
 
     	return redirect('admin/sanpham/danhsach')->with('thongbao','Bạn đã xóa thành công!');
     }
-    //San pham
+    //Don hang
     public function getDanhSachDonhang()
     {
         //$bills = Bills::all();
@@ -229,6 +230,11 @@ class AdminController extends Controller
             ->select('bills.id', 'bills.created_at', 'bills.updated_at', 'bills.total', 'bills.payment', 'bills.note', 'bills.status', 'customer.name', 'customer.gender', 'customer.address', 'customer.phone_number')
             ->get();
     	return view('admin.donhang.danhsach',['bills'=>$bills]);
+    }
+
+    public function getChiTietDonhang($id_bill)
+    {
+         
     }
     
     public function ajaxRequestStatus(Request $request)
@@ -245,6 +251,19 @@ class AdminController extends Controller
 
         return response()->json(['success'=>'Cập nhật thành công.']);
 
+    }
+
+    public function ajaxLoaisanphamStatus(Request $request)
+    {
+        $id = $request->id;
+        
+        $status = $request->input('status');
+
+        $loaisanpham = Type_Products::find($id);
+        $loaisanpham->status = $status;
+        $loaisanpham->save();
+
+        return response()->json(['success'=>'Cập nhật thành công.']);
     }
 
 

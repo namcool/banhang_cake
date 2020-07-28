@@ -123,7 +123,9 @@ Route::post('doi-mat-khau',[
 	'as'=>'changepass',
 	'uses'=>'PageController@postChangePass'
 ]);
-
+Route::get('admin/', function(){
+	return redirect('admin/dangnhap');
+});
 Route::get('admin/dangnhap','AdminController@getdangnhapAdmin');
 Route::post('admin/dangnhap','AdminController@postdangnhapAdmin');
 
@@ -141,6 +143,8 @@ Route::group(['prefix'=>'admin','middleware'=>'adminLogin'],function(){
 		Route::post('them','AdminController@postThemLoaiSp');
 
 		Route::get('xoa/{id}','AdminController@getXoaLoaiSp');
+
+		Route::post('ajaxLoaisanpham', 'AdminController@ajaxLoaisanphamStatus');
 	});
 	Route::group(['prefix'=>'sanpham'],function(){
 		//admin/sanpham/them
